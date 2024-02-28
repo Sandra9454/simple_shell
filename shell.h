@@ -17,7 +17,6 @@
 
 void loop(void);
 char *read_line(void);
-int execute(char **args);
 char **split_line(char *line);
 
 void _printenv(void);
@@ -27,5 +26,5 @@ int hsh_env(char **args);
 int hsh_exit(char **args);
 int hsh_help(char **args);
 int hsh_cd(char **args);
-
+void execute(char *line);
 #endif
