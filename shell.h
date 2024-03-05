@@ -15,16 +15,13 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-void loop(void);
-char *read_line(void);
-char **split_line(char *line);
+ssize_t get_cmd(char **lineptr);
+void trim_newline(char *line);
+void execute_cmd(char *cmd);
+int main(void);
+void parse_command(char *line, char **cmd, char ***args);
+int handle_builtin(char *cmd);
+void print_error(char *cmd);
+char *get_env_var(char *name);
 
-void _printenv(void);
-void signal_handler(int sig);
-
-int hsh_env(char **args);
-int hsh_exit(char **args);
-int hsh_help(char **args);
-int hsh_cd(char **args);
-void execute(char *line);
 #endif
