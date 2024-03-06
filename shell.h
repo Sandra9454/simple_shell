@@ -1,6 +1,7 @@
 #ifndef SHELL_H
 #define SHELL_H
 
+#define MAX_ARGS 64
 #define BUFFER_SIZE 1024
 #define DELIMITERS " \t\r\n\a"
 #define _GNU_SOURCE

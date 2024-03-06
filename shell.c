@@ -38,11 +38,14 @@ void trim_newline(char *line)
 
 void execute_cmd(char *line)
 {
+
 	pid_t pid = fork();
 	int i = 0;
 	int status;
-	char *argv[10];
+	char *argv[MAX_ARGS];
 	char *token;
+
+	memset(argv, 0, sizeof(argv));
 
 	token = strtok(line, " ");
 	while (token != NULL && i < 9)
