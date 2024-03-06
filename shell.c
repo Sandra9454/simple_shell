@@ -41,7 +41,7 @@ void execute_cmd(char *cmd)
 {
 	pid_t pid;
 	int status;
-	char *argv[2];
+	char *argv[] = {"/bin/ls", NULL};
 
 	argv[0] = cmd;
 	argv[1] = NULL;
