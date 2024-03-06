@@ -1,11 +1,10 @@
 #include "shell.h"
 
-
-
 /**
- * get_cmd - Reads a command from standard input.
- * @lineptr: pointer to buffer to hold the read line.
- * Return: no. of chracters read, -1 on faliure.
+ * get_cmd - reads a command from standard input
+ * @lineptr: pointer to the buffer to hold readline.
+ * Return: number of characters read, incl.delimiter
+ * reurn -1 on failure.
  */
 
 ssize_t get_cmd(char **lineptr)
@@ -13,13 +12,12 @@ ssize_t get_cmd(char **lineptr)
 	size_t bufsize = 0;
 
 	write(STDOUT_FILENO, "#cisfun$ ", 9);
-	return (getline(lineptr, &bufsize, stdin));
+		return (getline(lineptr, &bufsize, stdin));
 }
 
 /**
- * trim_newline - removes the newline character from,
- * string if present.
- * @line: the string to be modified
+ * trim_newline - removes newline character from string.
+ * @line: string to be modified.
  */
 
 void trim_newline(char *line)
@@ -34,17 +32,14 @@ void trim_newline(char *line)
 
 /**
  * execute_cmd - execute a command using execve.
- * @cmd: the command to be executed.
+ * @cmd: the command to execute.
  */
 
 void execute_cmd(char *cmd)
 {
 	pid_t pid;
 	int status;
-	char *argv[] = {"/bin/ls", NULL};
-
-	argv[0] = cmd;
-	argv[1] = NULL;
+	char *argv[2];
 
 	pid = fork();
 	if (pid == -1)
@@ -53,7 +48,6 @@ void execute_cmd(char *cmd)
 	}
 	else if (pid == 0)
 	{
-
 		if (execve(cmd, argv, environ) == -1)
 		{
 			perror(cmd);
@@ -62,16 +56,15 @@ void execute_cmd(char *cmd)
 	}
 	else
 	{
-	do {
-		waitpid(pid, &status, WUNTRACED);
-	}
-		while (!WIFEXITED(status) && !WIFSIGNALED(status));
+		do {
+			waitpid(pid, &status, WUNTRACED);
+		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 }
 
 /**
- * main - entry point for simple shell
- * Return: 0 on success
+ * main - entry point for simple shell.
+ * Return: 0 on success.
  */
 
 int main(void)
@@ -85,11 +78,11 @@ int main(void)
 		if (nread == -1)
 		{
 			if (feof(stdin))
-			{
+				{
 				write(STDOUT_FILENO, "\n", 1);
 				free(line);
 				exit(EXIT_SUCCESS);
-			}
+				}
 			else
 			{
 				perror("get_cmd");
@@ -97,11 +90,9 @@ int main(void)
 				continue;
 			}
 		}
-
 		trim_newline(line);
 		execute_cmd(line);
 	}
-
 	free(line);
 	return (0);
 }
