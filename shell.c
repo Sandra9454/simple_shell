@@ -33,32 +33,45 @@ void trim_newline(char *line)
 /**
  * execute_cmd - execute a command using execve.
  * @cmd: the command to execute.
+ * @line: string to be read.
  */
 
-void execute_cmd(char *cmd)
+void execute_cmd(char *line)
 {
-	pid_t pid;
+	pid_t pid = fork();
+	int i = 0;
 	int status;
-	char *argv[2];
+	char *argv[10];
+	char *token;
 
-	pid = fork();
+	token = strtok(line, " ");
+	while (token != NULL && i < 9)
+	{
+		argv[i++] = token;
+		token = strtok(NULL, " ");
+	}
+	argv[i] = NULL;
+
+	if (argv[0] == NULL)
+	{
+		return;
+	}
+
 	if (pid == -1)
 	{
 		perror("Error");
 	}
 	else if (pid == 0)
 	{
-		if (execve(cmd, argv, environ) == -1)
+		if (execve(argv[0], argv, environ) == -1)
 		{
-			perror(cmd);
+			perror(argv[0]);
 			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
-		do {
-			waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+		waitpid(pid, &status, 0);
 	}
 }
 
