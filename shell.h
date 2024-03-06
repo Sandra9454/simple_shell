@@ -3,6 +3,7 @@
 
 #define BUFFER_SIZE 1024
 #define DELIMITERS " \t\r\n\a"
+#define _GNU_SOURCE
 
 #include <stdio.h>
 #include <stdlib.h>
